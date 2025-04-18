@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      
+     
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -23,8 +23,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
