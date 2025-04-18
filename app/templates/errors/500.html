@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}Server error{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto text-center py-5">
+        <h1 class="display-1 fw-bold">500</h1>
+        <h2 class="mb-4">Server Error</h2>
+        <p class="lead mb-5">Something went wrong on our end. We're working to fix the problem and will be back up shortly.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Go to Homepage</a>
+    </div>
+</div>
+{% endblock %}

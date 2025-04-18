@@ -1,0 +1,28 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">{% if tag %}Edit Tag{% else %}New Tag{% endif %}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Tag Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ tag.name if tag else '' }}" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if tag %}Update Tag{% else %}Create Tag{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_tags') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

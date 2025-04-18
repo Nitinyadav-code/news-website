@@ -1,0 +1,28 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">{% if category %}Edit Category{% else %}New Category{% endif %}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ category.name if category else '' }}" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if category %}Update Category{% else %}Create Category{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_categories') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

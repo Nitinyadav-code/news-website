@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}Login to your account{% endblock %}
+{% block meta_keywords %}login, sign in, admin, blog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white text-center">
+                <h1 class="h4 mb-0">Login</h1>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

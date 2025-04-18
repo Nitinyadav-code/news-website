@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}Contact us with your questions, suggestions, or feedback{% endblock %}
+{% block meta_keywords %}contact, get in touch, feedback, email{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="mb-5">
+            <h1 class="display-4 fw-bold">Contact Us</h1>
+            <p class="lead">Have a question or feedback? Get in touch with our team.</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h2 class="h4 mb-4">Send Us a Message</h2>
+                        <form id="contactForm" action="{{ url_for('contact') }}" method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" name="subject" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h2 class="h4 mb-4">Contact Information</h2>
+                        <div class="mb-4">
+                            <h5 class="h6 mb-2">Email</h5>
+                            <p class="mb-0">
+                                <a href="mailto:contact@myblog.com" class="text-decoration-none">
+                                    <i class="fas fa-envelope me-2"></i>contact@myblog.com
+                                </a>
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="h6 mb-2">Phone</h5>
+                            <p class="mb-0">
+                                <a href="tel:+1234567890" class="text-decoration-none">
+                                    <i class="fas fa-phone-alt me-2"></i>+1 (234) 567-890
+                                </a>
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="h6 mb-2">Address</h5>
+                            <p class="mb-0">
+                                <i class="fas fa-map-marker-alt me-2"></i>123 Blog Street, City, Country
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="h6 mb-3">Follow Us</h5>
+                            <div class="d-flex gap-3">
+                                <a href="#" class="text-dark" title="Facebook">
+                                    <i class="fab fa-facebook-square fa-2x"></i>
+                                </a>
+                                <a href="#" class="text-dark" title="Twitter">
+                                    <i class="fab fa-twitter-square fa-2x"></i>
+                                </a>
+                                <a href="#" class="text-dark" title="Instagram">
+                                    <i class="fab fa-instagram-square fa-2x"></i>
+                                </a>
+                                <a href="#" class="text-dark" title="LinkedIn">
+                                    <i class="fab fa-linkedin fa-2x"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Message Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Message Sent</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Your message has been sent successfully. We'll get back to you soon!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // For demo purposes, show success modal when form is submitted
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real application, you'd send the form data to the server here
+                // For now, we'll just show the success modal
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+                // Reset form
+                contactForm.reset();
+            });
+        }
+    });
+</script>
+{% endblock %}

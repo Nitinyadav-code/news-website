@@ -1,0 +1,175 @@
+/* Admin specific styles */
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: static;
+        padding-top: 0;
+        top: 5rem;
+    }
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Navigation */
+#sidebar .nav-item {
+    width: 100%;
+}
+
+#sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0;
+    border-left: 3px solid transparent;
+}
+
+#sidebar .nav-link:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+#sidebar .nav-link.active {
+    color: #0d6efd;
+    border-left-color: #0d6efd;
+}
+
+#sidebar .nav-link i {
+    margin-right: 0.5rem;
+    color: #666;
+    width: 20px;
+    text-align: center;
+}
+
+#sidebar .nav-link.active i {
+    color: #0d6efd;
+}
+
+/* Dashboard cards */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1rem;
+}
+
+/* Table improvements */
+.table {
+    margin-bottom: 0;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.table th {
+    border-top: none;
+    font-weight: 600;
+}
+
+.table thead th {
+    border-top: none;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Responsive admin layout */
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: static;
+        padding-top: 0;
+    }
+    .sidebar-sticky {
+        height: auto;
+    }
+    .sidebar .navbar-brand {
+        padding-left: 1rem;
+    }
+}
+
+/* Custom utilities */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Form improvements */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Rich text editor (TinyMCE) customizations */
+.tox-tinymce {
+    border-radius: 0.25rem !important;
+    border-color: #ced4da !important;
+}
+
+.tox-statusbar {
+    border-top: 1px solid #ced4da !important;
+}
+
+/* Button groups in tables */
+.btn-group .btn {
+    border-radius: 0.25rem !important;
+    margin-right: 0.25rem;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+
+.btn-group > .btn {
+    margin-right: 0;
+}
+
+/* Custom table utilities */
+.table-align-middle td {
+    vertical-align: middle;
+}
+
+/* Dashboard stat cards */
+.stat-card i {
+    font-size: 2rem;
+}
+
+/* Admin form styling */
+.custom-file-label {
+    overflow: hidden;
+}
+
+/* Required form field indicators */
+.required:after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Custom switch styling */
+.form-switch .form-check-input {
+    width: 2.5em;
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }} | {% endif %}My Blog</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="{% block meta_description %}A minimalist blog about interesting topics{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}blog, minimalist, articles{% endblock %}">
+    <meta name="author" content="Blog Author">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="{% if title %}{{ title }} | {% endif %}My Blog">
+    <meta property="og:description" content="{% block og_description %}A minimalist blog about interesting topics{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='img/default-og-image.jpg') }}{% endblock %}">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% if title %}{{ title }} | {% endif %}My Blog">
+    <meta name="twitter:description" content="{% block twitter_description %}A minimalist blog about interesting topics{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ url_for('static', filename='img/default-twitter-image.jpg') }}{% endblock %}">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+    
+    <!-- JSON-LD Structured Data -->
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "My Blog",
+      "url": "{{ request.url_root }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.url_root }}search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% endblock %}
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">My Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="{{ url_for('search') }}" method="get">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" required>
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav ms-2">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 py-4">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-light border-top">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-6 text-md-start">
+                    <p class="mb-0">&copy; {{ current_year }} My Blog. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-muted me-2">Privacy Policy</a>
+                    <a href="#" class="text-muted">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">{% if user %}Edit User{% else %}New User{% endif %}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username if user else '' }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email if user else '' }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" {% if not user %}required{% endif %}>
+                        {% if user %}
+                            <div class="form-text">Leave blank to keep current password.</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin" {% if user and user.is_admin %}checked{% endif %}>
+                            <label class="form-check-label" for="is_admin">Admin privileges</label>
+                        </div>
+                        <div class="form-text">Give this user administrative access to manage the blog</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if user %}Update User{% else %}Create User{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_users') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

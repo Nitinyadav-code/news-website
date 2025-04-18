@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}Learn more about our blog and our mission{% endblock %}
+{% block meta_keywords %}about, blog, mission, team{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="mb-5">
+            <h1 class="display-4 fw-bold">About Us</h1>
+            <p class="lead">Learn more about our blog and our mission.</p>
+        </div>
+        
+        <div class="card border-0 shadow-sm mb-5">
+            <div class="card-body p-5">
+                <h2 class="mb-4">Our Story</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis, nisi eget varius feugiat, elit orci interdum nunc, ac dignissim nulla elit vel dui. Nullam euismod lectus eu sapien dignissim, in auctor dui tincidunt.</p>
+                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Cras vel est eget lectus egestas feugiat vel non orci. Aenean ullamcorper egestas est, id vulputate ante feugiat vel.</p>
+                
+                <h2 class="mb-4 mt-5">Our Mission</h2>
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Sed at lorem vitae risus venenatis tincidunt at ac sem. Cras dignissim eros ante, ac finibus orci scelerisque vitae.</p>
+                <ul>
+                    <li>Share knowledge and insights in our field</li>
+                    <li>Build a community of passionate readers</li>
+                    <li>Provide valuable resources and information</li>
+                </ul>
+                
+                <h2 class="mb-4 mt-5">Meet the Team</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <div class="bg-light rounded-circle p-3" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user fa-2x text-secondary"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-1">John Doe</h5>
+                                <p class="text-muted mb-2">Founder & Editor-in-Chief</p>
+                                <p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis, nisi eget varius feugiat.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <div class="bg-light rounded-circle p-3" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user fa-2x text-secondary"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-1">Jane Smith</h5>
+                                <p class="text-muted mb-2">Senior Writer</p>
+                                <p class="small">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

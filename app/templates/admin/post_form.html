@@ -1,0 +1,236 @@
+{% extends "admin/layout.html" %}
+
+{% block extra_head %}
+    <!-- TinyMCE CSS overrides -->
+    <style>
+        /* Make the editor take full height */
+        .tox-tinymce {
+            min-height: 1000px !important;
+        }
+        
+        /* Custom styling for media preview */
+        .img-preview-container {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #ddd;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .img-preview-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .preview-placeholder {
+            color: #aaa;
+        }
+        
+        /* word count styling */
+        .word-count {
+            margin-top: 5px;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+    <!-- Include TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/9aawrjanayra8stxl9t7l0kc5monu70wk36kjct5mlqaj0p2/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            tinymce.init({
+                selector: '#content',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags typography inlinecss',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | checklist numlist bullist indent outdent | link image media table mergetags | charmap emoticons | removeformat',
+                toolbar_mode: 'sliding',
+                /* Enable title field in the Image dialog */
+                image_title: true,
+                /* Enable automatic uploads of images */
+                automatic_uploads: true,
+                /* Add custom file picker for images */
+                file_picker_types: 'image',
+                file_picker_callback: function (cb, value, meta) {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    
+                    input.onchange = function () {
+                        var file = this.files[0];
+                        
+                        var reader = new FileReader();
+                        reader.onload = function () {
+                            var id = 'blobid' + (new Date()).getTime();
+                            var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                            var base64 = reader.result.split(',')[1];
+                            var blobInfo = blobCache.create(id, file, base64);
+                            blobCache.add(blobInfo);
+                            
+                            /* call the callback and populate the Title field with the file name */
+                            cb(blobInfo.blobUri(), { title: file.name });
+                        };
+                        reader.readAsDataURL(file);
+                    };
+                    
+                    input.click();
+                },
+                /* Content appearance */
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px; line-height:1.6; }',
+                height: 500,
+                /* Additional features */
+                menubar: 'file edit view insert format tools table help',
+                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote',
+                quickbars_insert_toolbar: 'image media table',
+                /* SEO tools */
+                setup: function(editor) {
+                    editor.on('KeyUp', function(e) {
+                        const content = editor.getContent({format: 'text'});
+                        const wordCount = content.split(/\s+/).filter(Boolean).length;
+                        const charCount = content.length;
+                        document.getElementById('word-count').innerText = `Words: ${wordCount} | Characters: ${charCount}`;
+                    });
+                    
+                    /* Additional custom buttons */
+                    editor.ui.registry.addButton('customDateInsert', {
+                        icon: 'insert-time',
+                        tooltip: 'Insert current date',
+                        onAction: function() {
+                            const now = new Date();
+                            editor.insertContent(now.toLocaleDateString());
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required value="{{ post.title if post else '' }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="summary" class="form-label">Summary</label>
+                        <textarea class="form-control" id="summary" name="summary" rows="3" maxlength="250">{{ post.summary if post else '' }}</textarea>
+                        <div class="form-text">A brief summary that will be displayed on the homepage (max 250 characters)</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <!-- TinyMCE Editor -->
+                        <textarea id="content" name="content">{{ post.content if post else '' }}</textarea>
+                        <div class="word-count" id="word-count">Words: 0 | Characters: 0</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rest of the form remains unchanged -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">SEO Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="meta_description" class="form-label">Meta Description</label>
+                        <textarea class="form-control" id="meta_description" name="meta_description" rows="2" maxlength="160">{{ post.meta_description if post else '' }}</textarea>
+                        <div class="form-text">Recommended length: 150-160 characters</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="meta_keywords" class="form-label">Meta Keywords</label>
+                        <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" value="{{ post.meta_keywords if post else '' }}">
+                        <div class="form-text">Comma-separated keywords</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- No changes to the right sidebar -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Publish</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="published" name="published" {% if post and post.published %}checked{% endif %}>
+                            <label class="form-check-label" for="published">Published</label>
+                        </div>
+                        <div class="form-text">Toggle to publish or save as draft</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if post %}Update Post{% else %}Create Post{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_posts') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Category</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <select class="form-select" id="category_id" name="category_id">
+                            <option value="">-- Select Category --</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if post and post.category_id == category.id %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Tags</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <select class="form-select" id="tags" name="tags" multiple size="6">
+                            {% for tag in tags %}
+                                <option value="{{ tag.id }}" {% if post and tag in post.tags %}selected{% endif %}>
+                                    {{ tag.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Hold Ctrl (or Command on Mac) to select multiple tags</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Featured Image</h5>
+                </div>
+                <div class="card-body">
+                    {% if post and post.featured_image %}
+                        <div class="mb-3">
+                            <img src="{{ url_for('static', filename=post.featured_image) }}" class="img-fluid rounded mb-2" alt="Current Featured Image">
+                            <p class="text-muted small">Current featured image</p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="featured_image" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" id="featured_image" name="featured_image" accept="image/png, image/jpeg, image/gif, image/webp">
+                        <div class="form-text">Recommended size: 1200×630 pixels</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
